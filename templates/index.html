@@ -278,6 +278,50 @@
         setupCloner('cursos-extra-container', 'add-curso-extra', 10);
         setupCloner('premios-container', 'add-premio', 10);
         setupCloner('voluntariado-container', 'add-vol', 10);
+
+        const form = document.querySelector('.resume-form');
+        if (form && window.fetch) {
+            form.addEventListener('submit', async function (ev) {
+                ev.preventDefault();
+
+                const formData = new FormData(form);
+                try {
+                    const response = await fetch('/gerar', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        const text = await response.text();
+                        alert('Erro ao gerar arquivo:\n\n' + text.substring(0, 400));
+                        return;
+                    }
+
+                    const blob = await response.blob();
+                    const disposition = response.headers.get('Content-Disposition') || '';
+                    let filename = 'curriculo.pdf';
+                    const match = disposition.match(/filename="?([^";]+)"?/i);
+                    if (match && match[1]) {
+                        filename = match[1];
+                    }
+
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    form.reset();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } catch (e) {
+                    console.error(e);
+                    alert('Erro inesperado ao gerar o arquivo. Tente novamente.');
+                }
+            });
+        }
     })();
 </script>
 </body>
