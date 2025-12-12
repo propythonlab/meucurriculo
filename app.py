@@ -11,6 +11,7 @@ import io
 import re
 import json
 from typing import Dict, Any
+from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -435,6 +436,7 @@ def gerar():
         "premios": premios,
         "voluntariados": voluntariados,
         "publicacoes_texto": publicacoes_texto,
+        "data_geracao": datetime.now().strftime("%d/%m/%Y"),
     }
 
     # Exportar em JSON

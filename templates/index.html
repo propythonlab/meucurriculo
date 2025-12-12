@@ -246,6 +246,15 @@
         <input type="hidden" name="output_format" value="pdf">
         <input type="hidden" name="template_style" value="corporativo">
 
+        <div class="grid-2">
+            <label>Carregar dados de um arquivo JSON (opcional)
+                <input type="file" id="import-json" accept="application/json">
+            </label>
+            <div class="hint">
+                Você pode reaproveitar um currículo salvo em JSON para preencher o formulário automaticamente.
+            </div>
+        </div>
+
         <button type="submit" class="btn-primary">Gerar arquivo</button>
     </form>
 </div>
@@ -320,6 +329,142 @@
                     console.error(e);
                     alert('Erro inesperado ao gerar o arquivo. Tente novamente.');
                 }
+            });
+        }
+
+        const jsonInput = document.getElementById('import-json');
+        if (form && jsonInput && window.FileReader) {
+            jsonInput.addEventListener('change', function (ev) {
+                const file = ev.target.files && ev.target.files[0];
+                if (!file) {
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        const text = String(e.target.result || '');
+                        const data = JSON.parse(text);
+
+                        function setField(name, value) {
+                            const el = form.elements[name];
+                            if (el) {
+                                el.value = value || '';
+                            }
+                        }
+
+                        setField('nome', data.nome);
+                        setField('titulo', data.titulo);
+                        setField('email', data.email);
+                        setField('telefone', data.telefone);
+                        setField('endereco', data.endereco);
+                        setField('foto_url', data.foto_url);
+                        setField('resumo', data.resumo);
+                        setField('publicacoes', data.publicacoes_texto);
+
+                        if (Array.isArray(data.skills_tecnicas)) {
+                            setField('skills_tecnicas', data.skills_tecnicas.join(', '));
+                        }
+                        if (Array.isArray(data.skills_comportamentais)) {
+                            setField('skills_comportamentais', data.skills_comportamentais.join(', '));
+                        }
+                        if (Array.isArray(data.skills_outras)) {
+                            setField('skills_outras', data.skills_outras.join(', '));
+                        }
+
+                        function populateSection(containerId, mappings, items) {
+                            if (!Array.isArray(items) || !items.length) return;
+                            const container = document.getElementById(containerId);
+                            if (!container) return;
+                            const template = container.querySelector('.experiencia-item');
+                            if (!template) return;
+                            const base = template.cloneNode(true);
+                            const clearInputs = base.querySelectorAll('input, textarea');
+                            clearInputs.forEach(function (el) { el.value = ''; });
+                            container.innerHTML = '';
+
+                            items.forEach(function (item) {
+                                const clone = base.cloneNode(true);
+                                mappings.forEach(function (map) {
+                                    const fieldName = map[0];
+                                    const key = map[1];
+                                    const el = clone.querySelector('[name="' + fieldName + '"]');
+                                    if (el) {
+                                        el.value = item && item[key] ? String(item[key]) : '';
+                                    }
+                                });
+                                container.appendChild(clone);
+                            });
+                        }
+
+                        populateSection('experiencias-container', [
+                            ['exp_empresa', 'empresa'],
+                            ['exp_cargo', 'cargo'],
+                            ['exp_periodo', 'periodo'],
+                            ['exp_local', 'local'],
+                            ['exp_descricao', 'descricao'],
+                            ['exp_conquistas', 'conquistas'],
+                            ['exp_tech', 'tecnologias']
+                        ], data.experiencias || []);
+
+                        populateSection('formacoes-container', [
+                            ['edu_curso', 'curso'],
+                            ['edu_inst', 'instituicao'],
+                            ['edu_cidade', 'cidade'],
+                            ['edu_ano', 'ano'],
+                            ['edu_status', 'status']
+                        ], data.formacoes || []);
+
+                        populateSection('certificacoes-container', [
+                            ['cert_nome', 'nome'],
+                            ['cert_inst', 'instituicao'],
+                            ['cert_ano', 'ano'],
+                            ['cert_codigo', 'codigo']
+                        ], data.certificacoes || []);
+
+                        populateSection('projetos-container', [
+                            ['proj_nome', 'nome'],
+                            ['proj_tec', 'tecnologias'],
+                            ['proj_desc', 'descricao'],
+                            ['proj_link', 'link']
+                        ], data.projetos || []);
+
+                        populateSection('idiomas-container', [
+                            ['idioma_nome', 'nome'],
+                            ['idioma_nivel', 'nivel']
+                        ], data.idiomas || []);
+
+                        populateSection('cursos-extra-container', [
+                            ['curso_extra_nome', 'nome'],
+                            ['curso_extra_carga', 'carga'],
+                            ['curso_extra_inst', 'instituicao'],
+                            ['curso_extra_ano', 'ano']
+                        ], data.cursos_extra || []);
+
+                        populateSection('premios-container', [
+                            ['premio_titulo', 'titulo'],
+                            ['premio_inst', 'instituicao'],
+                            ['premio_ano', 'ano'],
+                            ['premio_desc', 'descricao']
+                        ], data.premios || []);
+
+                        populateSection('voluntariado-container', [
+                            ['vol_org', 'organizacao'],
+                            ['vol_funcao', 'funcao'],
+                            ['vol_periodo', 'periodo'],
+                            ['vol_desc', 'descricao']
+                        ], data.voluntariados || []);
+
+                        alert('Dados importados com sucesso! Revise as informações antes de gerar o currículo.');
+                    } catch (err) {
+                        console.error(err);
+                        alert('Não foi possível ler o arquivo JSON. Verifique se ele foi gerado pelo sistema.');
+                    } finally {
+                        ev.target.value = '';
+                    }
+                };
+
+                reader.readAsText(file, 'utf-8');
             });
         }
     })();

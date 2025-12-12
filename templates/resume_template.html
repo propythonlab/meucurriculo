@@ -123,6 +123,18 @@
     </div>
 </div>
 
+{% if skills_tecnicas or skills_comportamentais or skills_outras %}
+<div class="section">
+    <div class="section-title">Resumo de habilidades</div>
+    <div class="section-content">
+        <p>
+            {% set todas_skills = (skills_tecnicas or []) + (skills_comportamentais or []) + (skills_outras or []) %}
+            {{ ', '.join(todas_skills) }}
+        </p>
+    </div>
+</div>
+{% endif %}
+
 {% if resumo %}
 <div class="section">
     <div class="section-title">Resumo profissional</div>
@@ -318,6 +330,12 @@
     <div class="section-content">
         <p>{{ publicacoes_texto }}</p>
     </div>
+</div>
+{% endif %}
+
+{% if data_geracao %}
+<div style="margin-top:16px;font-size:9px;color:#9ca3af;text-align:right;">
+    Currículo gerado em {{ data_geracao }}
 </div>
 {% endif %}
 
