@@ -188,7 +188,17 @@ def gerar():
     telefone = limited("telefone")
     endereco = normalize_text(limited("endereco"))
     portfolio = limited("link_portfolio")
+    # Foto: prioriza upload, cai para URL se não houver arquivo
     foto_url = limited("foto_url")
+    foto_arquivo = request.files.get("foto_arquivo")
+    if foto_arquivo and foto_arquivo.filename:
+        # WeasyPrint aceita data URL; mantemos tudo em memória, sem salvar em disco
+        foto_bytes = foto_arquivo.read()
+        import base64
+
+        mime = foto_arquivo.mimetype or "image/jpeg"
+        b64 = base64.b64encode(foto_bytes).decode("ascii")
+        foto_url = f"data:{mime};base64,{b64}"
     resumo = normalize_text(limited("resumo"))[:1000]
 
     job_url = request.form.get("job_url", "").strip()

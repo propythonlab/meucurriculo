@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <h1>Gerador de Currículo Profissional - 🐍ProPythonLab🐍</h1>
-    <form action="/gerar" method="post" class="resume-form">
+    <form action="/gerar" method="post" class="resume-form" enctype="multipart/form-data">
         <h2>1. Dados pessoais</h2>
         <div class="grid-2">
             <label>Nome completo
@@ -36,6 +36,9 @@
             </label>
             <label>URL da foto profissional (opcional)
                 <input type="url" name="foto_url" maxlength="200" placeholder="https://...">
+            </label>
+            <label>Ou envie a foto (opcional)
+                <input type="file" name="foto_arquivo" accept="image/*">
             </label>
         </div>
 
@@ -242,22 +245,9 @@
         </label>
 
         <h2>13. Exportação</h2>
-        <div class="grid-3">
-            <label>Formato de saída
-                <select name="output_format">
-                    <option value="pdf" selected>PDF</option>
-                    <option value="word">Word (.docx)</option>
-                    <option value="json">JSON (para salvar e carregar depois)</option>
-                </select>
-            </label>
-            <label>Template do PDF
-                <select name="template_style">
-                    <option value="corporativo" selected>Corporativo</option>
-                    <option value="minimalista">Minimalista</option>
-                    <option value="ats">ATS-friendly</option>
-                </select>
-            </label>
-        </div>
+        <!-- Exportação automática: sempre PDF com template corporativo -->
+        <input type="hidden" name="output_format" value="pdf">
+        <input type="hidden" name="template_style" value="corporativo">
 
         <button type="submit" class="btn-primary">Gerar arquivo</button>
     </form>

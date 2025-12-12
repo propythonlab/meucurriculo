@@ -104,6 +104,11 @@
 </head>
 <body>
 <div class="header">
+    {% if foto_url %}
+    <div class="avatar">
+        <img src="{{ foto_url }}" alt="Foto profissional">
+    </div>
+    {% endif %}
     <div class="header-main">
         <div class="name">{{ nome }}</div>
         {% if titulo %}<div class="title">{{ titulo }}</div>{% endif %}
@@ -114,11 +119,6 @@
             {% if portfolio %} | {{ portfolio }}{% endif %}
         </div>
     </div>
-    {% if foto_url %}
-    <div class="avatar">
-        <img src="{{ foto_url }}" alt="Foto profissional">
-    </div>
-    {% endif %}
 </div>
 
 {% if resumo %}

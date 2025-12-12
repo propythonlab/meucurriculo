@@ -23,14 +23,21 @@
 </head>
 <body>
 <div class="header">
-    <div class="name">{{ nome }}</div>
-    {% if titulo %}<div class="title">{{ titulo }}</div>{% endif %}
-    <div class="contact">
-        {% if email %}{{ email }}{% endif %}
-        {% if telefone %} | {{ telefone }}{% endif %}
-        {% if endereco %} | {{ endereco }}{% endif %}
-        {% if portfolio %} | {{ portfolio }}{% endif %}
+    <div>
+        <div class="name">{{ nome }}</div>
+        {% if titulo %}<div class="title">{{ titulo }}</div>{% endif %}
+        <div class="contact">
+            {% if email %}{{ email }}{% endif %}
+            {% if telefone %} | {{ telefone }}{% endif %}
+            {% if endereco %} | {{ endereco }}{% endif %}
+            {% if portfolio %} | {{ portfolio }}{% endif %}
+        </div>
     </div>
+    {% if foto_url %}
+    <div style="width:70px;height:70px;border-radius:999px;overflow:hidden;margin-left:12px;align-self:center;">
+        <img src="{{ foto_url }}" alt="Foto profissional" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    {% endif %}
 </div>
 
 {% if resumo %}
