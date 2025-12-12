@@ -1,5 +1,5 @@
-from js import document, window
-from pyodide.ffi import create_proxy
+from js import document, window  # type: ignore
+from pyodide.ffi import create_proxy  # type: ignore
 import json
 
 
