@@ -16,19 +16,22 @@
         }
         .header {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
-            padding-bottom: 8px;
-            margin-bottom: 14px;
-            border-bottom: 2px solid #1f2937;
+            gap: 14px;
+            padding: 10px 14px 12px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            background: linear-gradient(135deg, #eef2ff, #e0f2fe);
         }
         .header-main {
             flex: 1;
         }
         .name {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
         }
         .title {
@@ -42,11 +45,11 @@
             color: #6b7280;
         }
         .avatar {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 999px;
             overflow: hidden;
-            margin-left: 12px;
+            flex-shrink: 0;
         }
         .avatar img {
             width: 100%;
@@ -116,7 +119,6 @@
             {% if email %}{{ email }}{% endif %}
             {% if telefone %} | {{ telefone }}{% endif %}
             {% if endereco %} | {{ endereco }}{% endif %}
-            {% if portfolio %} | {{ portfolio }}{% endif %}
         </div>
     </div>
 </div>

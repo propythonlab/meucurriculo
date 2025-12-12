@@ -187,7 +187,6 @@ def gerar():
     email = limited("email")
     telefone = limited("telefone")
     endereco = normalize_text(limited("endereco"))
-    portfolio = limited("link_portfolio")
     # Foto: prioriza upload, cai para URL se não houver arquivo
     foto_url = limited("foto_url")
     foto_arquivo = request.files.get("foto_arquivo")
@@ -422,7 +421,6 @@ def gerar():
         "email": email,
         "telefone": telefone,
         "endereco": endereco,
-        "portfolio": portfolio,
         "foto_url": foto_url,
         "resumo": resumo,
         "experiencias": experiencias,
