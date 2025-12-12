@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Currículo - {{ nome }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            font-size: 11.5px;
+            color: #111827;
+            line-height: 1.5;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+            border-bottom: 2px solid #1f2937;
+        }
+        .header-main {
+            flex: 1;
+        }
+        .name {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .title {
+            font-size: 13px;
+            color: #4b5563;
+            margin-top: 4px;
+        }
+        .contact {
+            margin-top: 6px;
+            font-size: 10.5px;
+            color: #6b7280;
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-left: 12px;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .section {
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: 12.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #111827;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 4px;
+            padding-bottom: 2px;
+        }
+        .section-content {
+            margin-top: 4px;
+        }
+        .job {
+            margin-bottom: 6px;
+        }
+        .job-title {
+            font-weight: 600;
+            color: #111827;
+        }
+        .job-company {
+            font-style: normal;
+            color: #374151;
+        }
+        .job-period {
+            font-size: 10px;
+            color: #6b7280;
+        }
+        ul.skills {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        ul.skills li {
+            display: inline-block;
+            margin-right: 6px;
+            margin-bottom: 4px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background-color: #e5f0ff;
+            border: 1px solid #bfdbfe;
+            font-size: 10.5px;
+            color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-main">
+        <div class="name">{{ nome }}</div>
+        {% if titulo %}<div class="title">{{ titulo }}</div>{% endif %}
+        <div class="contact">
+            {% if email %}{{ email }}{% endif %}
+            {% if telefone %} | {{ telefone }}{% endif %}
+            {% if endereco %} | {{ endereco }}{% endif %}
+            {% if portfolio %} | {{ portfolio }}{% endif %}
+        </div>
+    </div>
+    {% if foto_url %}
+    <div class="avatar">
+        <img src="{{ foto_url }}" alt="Foto profissional">
+    </div>
+    {% endif %}
+</div>
+
+{% if resumo %}
+<div class="section">
+    <div class="section-title">Resumo profissional</div>
+    <div class="section-content">
+        <p>{{ resumo }}</p>
+    </div>
+</div>
+{% endif %}
+
+{% if experiencias %}
+<div class="section">
+    <div class="section-title">Experiência profissional</div>
+    <div class="section-content">
+        {% for exp in experiencias %}
+        <div class="job">
+            {% if exp.cargo %}<div class="job-title">{{ exp.cargo }}</div>{% endif %}
+            {% if exp.empresa %}<div class="job-company">{{ exp.empresa }}</div>{% endif %}
+            {% if exp.periodo %}<div class="job-period">{{ exp.periodo }}</div>{% endif %}
+            {% if exp.descricao %}<p>{{ exp.descricao }}</p>{% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if formacoes %}
+<div class="section">
+    <div class="section-title">Educação</div>
+    <div class="section-content">
+        {% for edu in formacoes %}
+        <div class="job">
+            {% if edu.curso %}<div class="job-title">{{ edu.curso }}</div>{% endif %}
+            {% if edu.instituicao %}<div class="job-company">{{ edu.instituicao }}</div>{% endif %}
+            {% if edu.cidade or edu.ano or edu.status %}
+            <div class="job-period">
+                {% if edu.cidade %}{{ edu.cidade }}{% endif %}
+                {% if edu.cidade and (edu.ano or edu.status) %} | {% endif %}
+                {% if edu.ano %}{{ edu.ano }}{% endif %}
+                {% if edu.status %} - {{ edu.status }}{% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if skills_tecnicas or skills_comportamentais or skills_outras %}
+<div class="section">
+    <div class="section-title">Habilidades</div>
+    <div class="section-content">
+        {% if skills_tecnicas %}
+        <div>
+            <strong> Técnicas:</strong>
+            <ul class="skills">
+                {% for skill in skills_tecnicas %}
+                <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% if skills_comportamentais %}
+        <div>
+            <strong> Comportamentais:</strong>
+            <ul class="skills">
+                {% for skill in skills_comportamentais %}
+                <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% if skills_outras %}
+        <div>
+            <strong> Outras:</strong>
+            <ul class="skills">
+                {% for skill in skills_outras %}
+                <li>{{ skill }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% if certificacoes %}
+<div class="section">
+    <div class="section-title">Certificações</div>
+    <div class="section-content">
+        {% for cert in certificacoes %}
+        <div class="job">
+            {% if cert.nome %}<div class="job-title">{{ cert.nome }}</div>{% endif %}
+            {% if cert.instituicao %}<div class="job-company">{{ cert.instituicao }}</div>{% endif %}
+            {% if cert.ano or cert.codigo %}
+            <div class="job-period">
+                {% if cert.ano %}{{ cert.ano }}{% endif %}
+                {% if cert.ano and cert.codigo %} | {% endif %}
+                {% if cert.codigo %}Código: {{ cert.codigo }}{% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if projetos %}
+<div class="section">
+    <div class="section-title">Projetos</div>
+    <div class="section-content">
+        {% for proj in projetos %}
+        <div class="job">
+            {% if proj.nome %}<div class="job-title">{{ proj.nome }}</div>{% endif %}
+            {% if proj.tecnologias %}<div class="job-company">{{ proj.tecnologias }}</div>{% endif %}
+            {% if proj.descricao %}<p>{{ proj.descricao }}</p>{% endif %}
+            {% if proj.link %}<div class="job-period">{{ proj.link }}</div>{% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if idiomas %}
+<div class="section">
+    <div class="section-title">Idiomas</div>
+    <div class="section-content">
+        {% for idi in idiomas %}
+        <div class="job">
+            {% if idi.nome %}<div class="job-title">{{ idi.nome }}</div>{% endif %}
+            {% if idi.nivel %}<div class="job-period">{{ idi.nivel }}</div>{% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if cursos_extra %}
+<div class="section">
+    <div class="section-title">Cursos e Workshops</div>
+    <div class="section-content">
+        {% for ce in cursos_extra %}
+        <div class="job">
+            {% if ce.nome %}<div class="job-title">{{ ce.nome }}</div>{% endif %}
+            {% if ce.instituicao %}<div class="job-company">{{ ce.instituicao }}</div>{% endif %}
+            {% if ce.carga or ce.ano %}
+            <div class="job-period">
+                {% if ce.carga %}{{ ce.carga }}{% endif %}
+                {% if ce.carga and ce.ano %} | {% endif %}
+                {% if ce.ano %}{{ ce.ano }}{% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if premios %}
+<div class="section">
+    <div class="section-title">Prêmios e Reconhecimentos</div>
+    <div class="section-content">
+        {% for pr in premios %}
+        <div class="job">
+            {% if pr.titulo %}<div class="job-title">{{ pr.titulo }}</div>{% endif %}
+            {% if pr.instituicao %}<div class="job-company">{{ pr.instituicao }}</div>{% endif %}
+            {% if pr.ano %}<div class="job-period">{{ pr.ano }}</div>{% endif %}
+            {% if pr.descricao %}<p>{{ pr.descricao }}</p>{% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if voluntariados %}
+<div class="section">
+    <div class="section-title">Voluntariado</div>
+    <div class="section-content">
+        {% for vol in voluntariados %}
+        <div class="job">
+            {% if vol.organizacao %}<div class="job-title">{{ vol.organizacao }}</div>{% endif %}
+            {% if vol.funcao %}<div class="job-company">{{ vol.funcao }}</div>{% endif %}
+            {% if vol.periodo %}<div class="job-period">{{ vol.periodo }}</div>{% endif %}
+            {% if vol.descricao %}<p>{{ vol.descricao }}</p>{% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if publicacoes_texto %}
+<div class="section">
+    <div class="section-title">Publicações</div>
+    <div class="section-content">
+        <p>{{ publicacoes_texto }}</p>
+    </div>
+</div>
+{% endif %}
+
+</body>
+</html>

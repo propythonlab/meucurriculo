@@ -1,0 +1,6 @@
+Flask==3.0.3
+WeasyPrint==62.3
+gunicorn
+python-docx
+requests
+beautifulsoup4

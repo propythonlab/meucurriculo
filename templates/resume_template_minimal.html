@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Currículo - {{ nome }}</title>
+    <style>
+        @page { size: A4; margin: 2cm; }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11.5px;
+            color: #111;
+            line-height: 1.4;
+        }
+        .name { font-size: 20px; font-weight: bold; }
+        .title { font-size: 12px; color: #555; }
+        .contact { font-size: 10.5px; color: #555; margin-top: 4px; }
+        .section { margin-top: 10px; }
+        .section-title { font-weight: bold; font-size: 12px; margin-bottom: 3px; }
+        .job-title { font-weight: bold; }
+        .job-period { font-size: 10px; color: #666; }
+        ul { margin: 0 0 4px 16px; padding: 0; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="name">{{ nome }}</div>
+    {% if titulo %}<div class="title">{{ titulo }}</div>{% endif %}
+    <div class="contact">
+        {% if email %}{{ email }}{% endif %}
+        {% if telefone %} | {{ telefone }}{% endif %}
+        {% if endereco %} | {{ endereco }}{% endif %}
+        {% if portfolio %} | {{ portfolio }}{% endif %}
+    </div>
+</div>
+
+{% if resumo %}
+<div class="section">
+    <div class="section-title">Resumo profissional</div>
+    <p>{{ resumo }}</p>
+</div>
+{% endif %}
+
+{% if experiencias %}
+<div class="section">
+    <div class="section-title">Experiência profissional</div>
+    {% for e in experiencias %}
+    <div>
+        {% if e.cargo %}<div class="job-title">{{ e.cargo }}</div>{% endif %}
+        {% if e.empresa or e.periodo %}
+        <div class="job-period">
+            {% if e.empresa %}{{ e.empresa }}{% endif %}
+            {% if e.empresa and e.periodo %} | {% endif %}
+            {% if e.periodo %}{{ e.periodo }}{% endif %}
+        </div>
+        {% endif %}
+        {% if e.descricao %}<p>{{ e.descricao }}</p>{% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if formacoes %}
+<div class="section">
+    <div class="section-title">Formação</div>
+    {% for edu in formacoes %}
+    <div>
+        {% if edu.curso %}<div class="job-title">{{ edu.curso }}</div>{% endif %}
+        {% if edu.instituicao or edu.ano %}
+        <div class="job-period">
+            {% if edu.instituicao %}{{ edu.instituicao }}{% endif %}
+            {% if edu.instituicao and edu.ano %} | {% endif %}
+            {% if edu.ano %}{{ edu.ano }}{% endif %}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if skills_tecnicas or skills_comportamentais or skills_outras %}
+<div class="section">
+    <div class="section-title">Habilidades</div>
+    {% if skills_tecnicas %}<p><strong>Técnicas:</strong> {{ ', '.join(skills_tecnicas) }}</p>{% endif %}
+    {% if skills_comportamentais %}<p><strong>Comportamentais:</strong> {{ ', '.join(skills_comportamentais) }}</p>{% endif %}
+    {% if skills_outras %}<p><strong>Outras:</strong> {{ ', '.join(skills_outras) }}</p>{% endif %}
+</div>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de Currículo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Gerador de Currículo Profissional - 🐍ProPythonLab🐍</h1>
+    <form action="/gerar" method="post" class="resume-form">
+        <h2>1. Dados pessoais</h2>
+        <div class="grid-2">
+            <label>Nome completo
+                <input type="text" name="nome" required maxlength="120">
+            </label>
+            <label>Profissão / Título principal
+                <input type="text" name="titulo" required maxlength="120" placeholder="Ex: Desenvolvedor Python, Analista de Dados, Auxiliar Administrativo Hospitalar">
+            </label>
+        </div>
+        <div class="grid-3">
+            <label>E-mail
+                <input type="email" name="email" required maxlength="120">
+            </label>
+            <label>Telefone
+                <input type="text" name="telefone" required maxlength="40">
+            </label>
+            <label>Endereço (opcional)
+                <input type="text" name="endereco" maxlength="160">
+            </label>
+        </div>
+        <div class="grid-3">
+            <label>Link para portfólio / GitHub / LinkedIn (opcional)
+                <input type="url" name="link_portfolio" maxlength="200" placeholder="https://github.com/seu_usuario">
+            </label>
+            <label>URL da foto profissional (opcional)
+                <input type="url" name="foto_url" maxlength="200" placeholder="https://...">
+            </label>
+        </div>
+
+        <h2>2. Resumo profissional</h2>
+        <label>Sobre mim (até 1000 caracteres)
+            <textarea name="resumo" rows="5" maxlength="1000" placeholder="Quem é você profissionalmente, principais forças, resultados relevantes e objetivo atual."></textarea>
+        </label>
+
+        <h3>Análise de vaga (opcional)</h3>
+        <label>URL da vaga (o sistema tentará priorizar palavras-chave dessa página)
+            <input type="url" name="job_url" maxlength="300" placeholder="https://...">
+        </label>
+
+        <h2>3. Experiência profissional</h2>
+        <div id="experiencias-container">
+            <div class="experiencia-item">
+                <div class="grid-2">
+                    <label>Nome da empresa
+                        <input type="text" name="exp_empresa" maxlength="120">
+                    </label>
+                    <label>Cargo ocupado
+                        <input type="text" name="exp_cargo" maxlength="120">
+                    </label>
+                </div>
+                <div class="grid-3">
+                    <label>Período
+                        <input type="text" name="exp_periodo" maxlength="80" placeholder="Ex: Jan/2022 — Atual">
+                    </label>
+                    <label>Localização (opcional)
+                        <input type="text" name="exp_local" maxlength="80" placeholder="Ex: São Paulo - SP / Remoto">
+                    </label>
+                </div>
+                <label>Descrição das atividades
+                    <textarea name="exp_descricao" rows="3" maxlength="1500" placeholder="Principais atividades exercidas na função."></textarea>
+                </label>
+                <label>Principais conquistas (bullets separados por ponto e vírgula)
+                    <textarea name="exp_conquistas" rows="3" maxlength="1500" placeholder="Liderança em projetos de automação; Redução de custos em 35%; Implementação de testes automatizados..."></textarea>
+                </label>
+                <label>Tecnologias usadas (opcional, separadas por vírgula)
+                    <textarea name="exp_tech" rows="2" maxlength="500" placeholder="Python, Flask, FastAPI, Docker, PostgreSQL..."></textarea>
+                </label>
+            </div>
+        </div>
+        <button type="button" class="btn-secondary" id="add-experiencia">➕ Adicionar experiência</button>
+
+        <h2>4. Formação / Educação</h2>
+        <div id="formacoes-container">
+            <div class="experiencia-item">
+                <div class="grid-2">
+                    <label>Nome do curso
+                        <input type="text" name="edu_curso" maxlength="160">
+                    </label>
+                    <label>Instituição
+                        <input type="text" name="edu_inst" maxlength="160">
+                    </label>
+                </div>
+                <div class="grid-3">
+                    <label>Cidade / País (opcional)
+                        <input type="text" name="edu_cidade" maxlength="120">
+                    </label>
+                    <label>Ano de conclusão
+                        <input type="text" name="edu_ano" maxlength="10" placeholder="Ex: 2024">
+                    </label>
+                    <label>Situação (opcional)
+                        <input type="text" name="edu_status" maxlength="40" placeholder="Concluído, Cursando, Trancado">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn-secondary" id="add-formacao">➕ Adicionar formação</button>
+
+        <h2>5. Habilidades</h2>
+        <label>Habilidades técnicas (separadas por vírgulas)
+            <textarea name="skills_tecnicas" rows="2" maxlength="1000" placeholder="Python, SQL, HTML/CSS, Power BI, FastAPI, Git, Linux..."></textarea>
+        </label>
+        <label>Habilidades comportamentais (separadas por vírgulas)
+            <textarea name="skills_comportamentais" rows="2" maxlength="1000" placeholder="Comunicação, Trabalho em equipe, Organização, Proatividade..."></textarea>
+        </label>
+        <label>Outras habilidades / ferramentas
+            <textarea name="skills_outras" rows="2" maxlength="1000" placeholder="Inglês intermediário, Pacote Office, Notion, Jira..."></textarea>
+        </label>
+
+        <h2>6. Certificações</h2>
+        <div id="certificacoes-container">
+            <div class="experiencia-item">
+                <div class="grid-3">
+                    <label>Nome da certificação
+                        <input type="text" name="cert_nome" maxlength="160">
+                    </label>
+                    <label>Instituição emissora
+                        <input type="text" name="cert_inst" maxlength="160">
+                    </label>
+                    <label>Ano
+                        <input type="text" name="cert_ano" maxlength="10">
+                    </label>
+                </div>
+                <label>Código de verificação (opcional)
+                    <input type="text" name="cert_codigo" maxlength="80">
+                </label>
+            </div>
+        </div>
+        <button type="button" class="btn-secondary" id="add-cert">➕ Adicionar certificação</button>
+
+        <h2>7. Projetos</h2>
+        <div id="projetos-container">
+            <div class="experiencia-item">
+                <label>Nome do projeto
+                    <input type="text" name="proj_nome" maxlength="160">
+                </label>
+                <label>Tecnologias
+                    <textarea name="proj_tec" rows="2" maxlength="500" placeholder="Python, Flask, React, PostgreSQL..."></textarea>
+                </label>
+                <label>Descrição do impacto
+                    <textarea name="proj_desc" rows="3" maxlength="1000" placeholder="Descreva o problema resolvido e o impacto do projeto."></textarea>
+                </label>
+                <label>Link (GitHub ou demonstração)
+                    <input type="url" name="proj_link" maxlength="200">
+                </label>
+            </div>
+        </div>
+        <button type="button" class="btn-secondary" id="add-projeto">➕ Adicionar projeto</button>
+
+        <h2>8. Idiomas</h2>
+        <div id="idiomas-container">
+            <div class="experiencia-item">
+                <div class="grid-2">
+                    <label>Idioma
+                        <input type="text" name="idioma_nome" maxlength="80" placeholder="Inglês, Espanhol...">
+                    </label>
+                    <label>Nível
+                        <input type="text" name="idioma_nivel" maxlength="80" placeholder="Básico, Intermediário, Avançado, Fluente">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn-secondary" id="add-idioma">➕ Adicionar idioma</button>
+
+        <h2>9. Cursos / Workshops</h2>
+        <div id="cursos-extra-container">
+            <div class="experiencia-item">
+                <div class="grid-3">
+                    <label>Nome do curso / workshop
+                        <input type="text" name="curso_extra_nome" maxlength="160">
+                    </label>
+                    <label>Carga horária
+                        <input type="text" name="curso_extra_carga" maxlength="40" placeholder="Ex: 20h">
+                    </label>
+                    <label>Instituição
+                        <input type="text" name="curso_extra_inst" maxlength="160">
+                    </label>
+                </div>
+                <label>Ano
+                    <input type="text" name="curso_extra_ano" maxlength="10">
+                </label>
+            </div>
+        </div>
+        <button type="button" class="btn-secondary" id="add-curso-extra">➕ Adicionar curso / workshop</button>
+
+        <h2>10. Prêmios e reconhecimentos</h2>
+        <div id="premios-container">
+            <div class="experiencia-item">
+                <div class="grid-3">
+                    <label>Título
+                        <input type="text" name="premio_titulo" maxlength="160">
+                    </label>
+                    <label>Instituição
+                        <input type="text" name="premio_inst" maxlength="160">
+                    </label>
+                    <label>Ano
+                        <input type="text" name="premio_ano" maxlength="10">
+                    </label>
+                </div>
+                <label>Descrição breve
+                    <textarea name="premio_desc" rows="2" maxlength="500"></textarea>
+                </label>
+            </div>
+        </div>
+        <button type="button" class="btn-secondary" id="add-premio">➕ Adicionar prêmio</button>
+
+        <h2>11. Voluntariado</h2>
+        <div id="voluntariado-container">
+            <div class="experiencia-item">
+                <div class="grid-2">
+                    <label>Organização
+                        <input type="text" name="vol_org" maxlength="160">
+                    </label>
+                    <label>Função
+                        <input type="text" name="vol_funcao" maxlength="160">
+                    </label>
+                </div>
+                <label>Período
+                    <input type="text" name="vol_periodo" maxlength="80" placeholder="Ex: 2021 — 2023">
+                </label>
+                <label>Descrição
+                    <textarea name="vol_desc" rows="3" maxlength="800"></textarea>
+                </label>
+            </div>
+        </div>
+        <button type="button" class="btn-secondary" id="add-vol">➕ Adicionar voluntariado</button>
+
+        <h2>12. Publicações (opcional)</h2>
+        <label>Artigos, palestras, papers, links relevantes
+            <textarea name="publicacoes" rows="4" maxlength="2000" placeholder="Liste aqui publicações, palestras, artigos, blogs ou conteúdos relevantes."></textarea>
+        </label>
+
+        <h2>13. Exportação</h2>
+        <div class="grid-3">
+            <label>Formato de saída
+                <select name="output_format">
+                    <option value="pdf" selected>PDF</option>
+                    <option value="word">Word (.docx)</option>
+                    <option value="json">JSON (para salvar e carregar depois)</option>
+                </select>
+            </label>
+            <label>Template do PDF
+                <select name="template_style">
+                    <option value="corporativo" selected>Corporativo</option>
+                    <option value="minimalista">Minimalista</option>
+                    <option value="ats">ATS-friendly</option>
+                </select>
+            </label>
+        </div>
+
+        <button type="submit" class="btn-primary">Gerar arquivo</button>
+    </form>
+</div>
+<script>
+    (function () {
+        function setupCloner(containerId, buttonId, maxItems) {
+            const container = document.getElementById(containerId);
+            const button = document.getElementById(buttonId);
+            if (!container || !button) return;
+
+            button.addEventListener('click', function () {
+                const items = container.getElementsByClassName('experiencia-item');
+                if (maxItems && items.length >= maxItems) {
+                    alert('Limite máximo de itens atingido.');
+                    return;
+                }
+                const first = items[0];
+                const clone = first.cloneNode(true);
+                const inputs = clone.querySelectorAll('input, textarea');
+                inputs.forEach(function (el) { el.value = ''; });
+                container.appendChild(clone);
+            });
+        }
+
+        setupCloner('experiencias-container', 'add-experiencia', 8);
+        setupCloner('formacoes-container', 'add-formacao', 8);
+        setupCloner('certificacoes-container', 'add-cert', 8);
+        setupCloner('projetos-container', 'add-projeto', 10);
+        setupCloner('idiomas-container', 'add-idioma', 10);
+        setupCloner('cursos-extra-container', 'add-curso-extra', 10);
+        setupCloner('premios-container', 'add-premio', 10);
+        setupCloner('voluntariado-container', 'add-vol', 10);
+    })();
+</script>
+</body>
+</html>
